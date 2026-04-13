@@ -5,11 +5,17 @@ import {
   MoreHorizontal, MoreVertical, Download, Eye, ChevronDown, ChevronRight,
   FileSpreadsheet, Folder, X, ExternalLink, Upload, Edit3, Edit2, FolderPlus, Trash2, Calendar
 } from "lucide-react";
+import dynamic from 'next/dynamic';
+
+const PDFViewer = dynamic(() => import('../../../components/PDFViewer'), {
+  ssr: false
+});
 
 export default function DocumentsPage() {
   const [activeModal, setActiveModal] = useState<string | null>(null);
   const [openFolderMenu, setOpenFolderMenu] = useState<string | null>(null);
   const [openDocMenu, setOpenDocMenu] = useState<string | null>(null);
+  const [pdfFile, setPdfFile] = useState<string | null>(null);
 
   const toggleFolderMenu = (name: string, e: React.MouseEvent) => {
     e.stopPropagation();
@@ -137,6 +143,8 @@ export default function DocumentsPage() {
                typeBg="bg-[#EAF7F0]"
                openMenu={openDocMenu}
                onMenuClick={toggleDocMenu}
+               setPdfFile={setPdfFile}
+               setActiveModal={setActiveModal}
              />
              <DocumentCard 
                type="XLSX" 
@@ -153,6 +161,8 @@ export default function DocumentsPage() {
                typeBg="bg-[#EAF7F0]"
                openMenu={openDocMenu}
                onMenuClick={toggleDocMenu}
+               setPdfFile={setPdfFile}
+               setActiveModal={setActiveModal}
              />
              <DocumentCard 
                type="PDF" 
@@ -169,6 +179,8 @@ export default function DocumentsPage() {
                typeBg="bg-[#FFF0E6]"
                openMenu={openDocMenu}
                onMenuClick={toggleDocMenu}
+               setPdfFile={setPdfFile}
+               setActiveModal={setActiveModal}
              />
              <DocumentCard 
                type="PDF" 
@@ -183,6 +195,8 @@ export default function DocumentsPage() {
                typeBg="bg-[#FFF0E6]"
                openMenu={openDocMenu}
                onMenuClick={toggleDocMenu}
+               setPdfFile={setPdfFile}
+               setActiveModal={setActiveModal}
              />
           </div>
 
@@ -248,7 +262,7 @@ export default function DocumentsPage() {
                </div>
 
                <label htmlFor="file-upload" className="cursor-pointer">
-                  <div className="px-2 flex flex-col items-center justify-center border-2 border-dashed border-[#E5E5E5] rounded-[16px] bg-white py-10 hover:border-[#3D47F4]/50 transition-all hover:bg-[#FAFAFA] relative">
+                  <div className="px-2 flex flex-col items-center justify-center border-2 border-dashed border-[#E5E5E5] rounded-[16px] bg-white py-10 hover:border-[#FE5729]/50 transition-all hover:bg-[#FAFAFA] relative">
                      <Upload size={28} className="text-gray-300 mb-3" />
                      <p className="text-[13px] font-bold text-[#1C1C1C] mb-1">Drag & drop or click to select</p>
                      <p className="text-[11px] font-semibold text-gray-400">PDF, DOCX, DWG, XLS, PNG...</p>
@@ -259,7 +273,7 @@ export default function DocumentsPage() {
 
                <div className="flex justify-between items-center pt-4 px-2">
                   <button onClick={() => setActiveModal(null)} className="text-[14px] font-bold text-gray-500 hover:text-[#1C1C1C] transition-colors">Cancel</button>
-                  <button onClick={() => {}} className="px-8 py-2.5 rounded-[12px] bg-[#3D47F4] hover:bg-[#2b35d8] text-white text-[14px] font-bold shadow-md transition-all">Create</button>
+                  <button onClick={() => {}} className="px-8 py-2.5 rounded-[12px] bg-[#FE5729] hover:bg-[#e84a1f] text-white text-[14px] font-bold shadow-md transition-all">Create</button>
                </div>
             </div>
          </ModalOverlay>
@@ -314,12 +328,76 @@ export default function DocumentsPage() {
                </div>
                <div className="flex justify-end items-center gap-4 pt-4">
                   <button onClick={() => setActiveModal(null)} className="text-[14px] font-bold text-gray-500 hover:text-[#1C1C1C] transition-colors">Cancel</button>
-                  <button onClick={() => setActiveModal(null)} className="px-6 py-2.5 rounded-[12px] bg-[#3D47F4] hover:bg-[#2b35d8] text-white text-[14px] font-bold shadow-md transition-all">Create</button>
+                  <button onClick={() => setActiveModal(null)} className="px-6 py-2.5 rounded-[12px] bg-[#FE5729] hover:bg-[#e84a1f] text-white text-[14px] font-bold shadow-md transition-all">Create</button>
                </div>
             </div>
          </ModalOverlay>
       )}
 
+      {activeModal === "upload-version" && (
+        <ModalOverlay onClose={() => setActiveModal(null)} title="Upload new version" width="w-[500px]">
+          <div className="p-2 space-y-4">
+            <div>
+              <label className="text-[12px] font-bold text-[#1C1C1C] block mb-1">Title</label>
+              <input type="text" value="ADsadad" readOnly className="w-full bg-[#F1F1F1] border border-[#E5E5E5] rounded-xl px-4 py-2.5 text-[13px] font-semibold text-gray-500" />
+            </div>
+            <div>
+              <label className="text-[12px] font-bold text-[#1C1C1C] block mb-1">New file</label>
+              <div className="flex flex-col items-center justify-center border-2 border-dashed border-[#E5E5E5] rounded-[16px] bg-white py-10 hover:border-[#FE5729]/50 transition-all cursor-pointer">
+                <Upload size={28} className="text-gray-300 mb-3" />
+                <p className="text-[13px] font-bold text-[#1C1C1C]">Drag & drop or click to select</p>
+              </div>
+            </div>
+            <div>
+              <label className="text-[12px] font-bold text-[#1C1C1C] block mb-1">Comment</label>
+              <textarea placeholder="Optional version comment" className="w-full bg-[#FAFAFA] border border-[#F1F1F1] rounded-xl px-4 py-2.5 text-[13px] font-semibold focus:outline-none focus:border-[#1C1C1C]/20 min-h-[80px]"></textarea>
+            </div>
+            <div className="flex justify-end items-center gap-4 pt-4">
+              <button onClick={() => setActiveModal(null)} className="text-[14px] font-bold text-gray-500 hover:text-[#1C1C1C] transition-colors">Cancel</button>
+              <button onClick={() => setActiveModal(null)} className="px-6 py-2.5 rounded-[12px] bg-[#FE5729] hover:bg-[#e84a1f] text-white text-[14px] font-bold shadow-md transition-all">Upload</button>
+            </div>
+          </div>
+        </ModalOverlay>
+      )}
+
+      {activeModal === "edit-metadata" && (
+        <ModalOverlay onClose={() => setActiveModal(null)} title="Edit metadata" width="w-[500px]">
+          <div className="p-2 space-y-4">
+            <div>
+              <label className="text-[12px] font-bold text-[#1C1C1C] block mb-1">Name</label>
+              <input type="text" value="ADsadad" className="w-full bg-[#FAFAFA] border border-[#F1F1F1] rounded-xl px-4 py-2.5 text-[13px] font-semibold focus:outline-none focus:border-[#1C1C1C]/20" />
+            </div>
+            <div>
+              <label className="text-[12px] font-bold text-[#1C1C1C] block mb-1">Project</label>
+              <select className="w-full bg-[#FAFAFA] border border-[#F1F1F1] rounded-xl px-4 py-2.5 text-[13px] font-semibold focus:outline-none focus:border-[#1C1C1C]/20">
+                <option>projet 1</option>
+              </select>
+            </div>
+            <div>
+              <label className="text-[12px] font-bold text-[#1C1C1C] block mb-1">Document type</label>
+              <select className="w-full bg-[#FAFAFA] border border-[#F1F1F1] rounded-xl px-4 py-2.5 text-[13px] font-semibold focus:outline-none focus:border-[#1C1C1C]/20">
+                <option>Plan</option>
+              </select>
+            </div>
+            <div>
+              <label className="text-[12px] font-bold text-[#1C1C1C] block mb-1">Lot</label>
+              <input type="text" className="w-full bg-[#FAFAFA] border border-[#F1F1F1] rounded-xl px-4 py-2.5 text-[13px] font-semibold focus:outline-none focus:border-[#1C1C1C]/20" />
+            </div>
+            <div>
+              <label className="text-[12px] font-bold text-[#1C1C1C] block mb-1">Description</label>
+              <textarea className="w-full bg-[#FAFAFA] border border-[#F1F1F1] rounded-xl px-4 py-2.5 text-[13px] font-semibold focus:outline-none focus:border-[#1C1C1C]/20 min-h-[80px]"></textarea>
+            </div>
+            <div className="flex justify-end items-center gap-4 pt-4">
+              <button onClick={() => setActiveModal(null)} className="text-[14px] font-bold text-gray-500 hover:text-[#1C1C1C] transition-colors">Cancel</button>
+              <button onClick={() => setActiveModal(null)} className="px-6 py-2.5 rounded-[12px] bg-[#FE5729] hover:bg-[#e84a1f] text-white text-[14px] font-bold shadow-md transition-all">Save</button>
+            </div>
+          </div>
+        </ModalOverlay>
+      )}
+
+      {pdfFile && (
+        <PDFViewer file={pdfFile} onClose={() => setPdfFile(null)} />
+      )}
     </div>
   );
 }
@@ -328,7 +406,7 @@ function ModalOverlay({ children, onClose, title, text, width = "w-[600px]" }: a
    return (
       <div className="fixed inset-0 z-50 bg-black/20 backdrop-blur-[2px] flex items-center justify-center p-4" onClick={onClose}>
          <div className={`${width} bg-white rounded-[16px] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200`} onClick={(e) => e.stopPropagation()}>
-            <div className="bg-[#3D47F4] p-5 flex justify-between items-start text-white" onClick={(e) => e.stopPropagation()}>
+            <div className="bg-[#1C1C1C] p-5 flex justify-between items-start text-white" onClick={(e) => e.stopPropagation()}>
                <div className="flex gap-4 items-start">
                   <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center shrink-0 border border-white/20">
                      <FileText size={20} />
@@ -382,7 +460,7 @@ function FolderTreeItem({ name, count, hasChildren, padding, open, openMenu, onM
   );
 }
 
-function DocumentCard({ type, name, desc, project, date, author, version, size, category, badges, typeColor, typeBg, openMenu, onMenuClick }: any) {
+function DocumentCard({ type, name, desc, project, date, author, version, size, category, badges, typeColor, typeBg, openMenu, onMenuClick, setPdfFile, setActiveModal }: any) {
   const isOpenMenu = openMenu === name;
 
   return (
@@ -426,7 +504,10 @@ function DocumentCard({ type, name, desc, project, date, author, version, size, 
 
       <div className="flex items-center gap-2">
          {/* Action buttons visible by default (not just on hover) to match old design usability */}
-         <button className="w-9 h-9 rounded-full bg-white border border-[#F1F1F1] flex items-center justify-center text-gray-500 hover:text-[#1C1C1C] hover:border-[#1C1C1C]/20 transition-all shadow-sm">
+         <button
+           onClick={() => setPdfFile("/sample.pdf")}
+           className="w-9 h-9 rounded-full bg-white border border-[#F1F1F1] flex items-center justify-center text-gray-500 hover:text-[#1C1C1C] hover:border-[#1C1C1C]/20 transition-all shadow-sm"
+         >
            <Eye size={16} />
          </button>
          <button className="w-9 h-9 rounded-full bg-white border border-[#F1F1F1] flex items-center justify-center text-gray-500 hover:text-[#1C1C1C] hover:border-[#1C1C1C]/20 transition-all shadow-sm">
@@ -440,9 +521,9 @@ function DocumentCard({ type, name, desc, project, date, author, version, size, 
             {/* Document Action Dropdown */}
             {isOpenMenu && (
                <div className="absolute right-0 top-12 w-[240px] bg-white border border-[#F1F1F1] rounded-2xl shadow-[0_10px_40px_rgb(0,0,0,0.08)] z-50 py-2 flex flex-col px-1 transform origin-top-right">
-                 <button className="text-left px-3 py-2 text-[13px] font-semibold text-gray-600 hover:text-[#1C1C1C] hover:bg-[#FAFAFA] rounded-xl flex items-center gap-3"><ExternalLink size={14}/> View details</button>
-                 <button className="text-left px-3 py-2 text-[13px] font-semibold text-gray-600 hover:text-[#1C1C1C] hover:bg-[#FAFAFA] rounded-xl flex items-center gap-3"><Upload size={14}/> Upload version</button>
-                 <button className="text-left px-3 py-2 text-[13px] font-semibold text-gray-600 hover:text-[#1C1C1C] hover:bg-[#FAFAFA] rounded-xl flex items-center gap-3"><Edit3 size={14}/> Edit metadata</button>
+                 <a href={`/documents/${name}`} className="text-left px-3 py-2 text-[13px] font-semibold text-gray-600 hover:text-[#1C1C1C] hover:bg-[#FAFAFA] rounded-xl flex items-center gap-3"><ExternalLink size={14}/> View details</a>
+                 <button onClick={() => setActiveModal("upload-version")} className="text-left px-3 py-2 text-[13px] font-semibold text-gray-600 hover:text-[#1C1C1C] hover:bg-[#FAFAFA] rounded-xl flex items-center gap-3"><Upload size={14}/> Upload version</button>
+                 <button onClick={() => setActiveModal("edit-metadata")} className="text-left px-3 py-2 text-[13px] font-semibold text-gray-600 hover:text-[#1C1C1C] hover:bg-[#FAFAFA] rounded-xl flex items-center gap-3"><Edit3 size={14}/> Edit metadata</button>
                  <button className="text-left px-3 py-2 text-[13px] font-semibold text-gray-600 hover:text-[#1C1C1C] hover:bg-[#FAFAFA] rounded-xl flex items-center gap-3"><Download size={14}/> Download all versions</button>
                  
                  <div className="h-[1px] bg-[#F1F1F1] my-1 mx-2" />

@@ -34,14 +34,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
             <nav className="flex flex-col gap-1 w-full px-4 flex-1">
               <NavItem icon={<Activity size={18} />} label="Dashboard" href="/" />
-              <NavItem icon={<FolderOpen size={18} />} label="Projects" count={1} href="#" />
+              <NavItem icon={<FolderOpen size={18} />} label="Projects" count={1} href="/projects" />
               <NavItem icon={<MessageSquare size={18} />} label="RFIs" count={0} href="/rfis" />
               <NavItem icon={<FileText size={18} />} label="Documents" count={3} href="/documents" />
               
               <div className="px-2 mt-8 mb-2">
                 <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">System</span>
               </div>
-              <NavItem icon={<Settings size={18} />} label="Configuration" href="#" />
+              <NavItem icon={<Settings size={18} />} label="Configuration" href="/configuration" />
               <NavItem icon={<Shield size={18} />} label="Access Control" href="/access-control" />
             </nav>
             
