@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import TranslatedNavItem from "@/components/TranslatedNavItem";
 import { 
   FolderOpen, MessageSquare, FileText, Settings, Shield,
   Search, Bell, Activity, Plus, LogOut
@@ -32,23 +33,20 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </div>
 
             <nav className="flex flex-col gap-1 w-full px-4 flex-1">
-              <NavItem icon={<Activity size={18} />} label="Dashboard" href="/" />
-              <NavItem icon={<FolderOpen size={18} />} label="Projects" count={1} href="/projects" />
-              <NavItem icon={<MessageSquare size={18} />} label="RFIs" count={0} href="/rfis" />
-              <NavItem icon={<FileText size={18} />} label="Documents" count={3} href="/documents" />
+              <TranslatedNavItem icon={<Activity size={18} />} labelKey="Dashboard" href="/" />
+              <TranslatedNavItem icon={<FolderOpen size={18} />} labelKey="Projects" count={1} href="/projects" />
+              <TranslatedNavItem icon={<MessageSquare size={18} />} labelKey="RFIs" count={0} href="/rfis" />
+              <TranslatedNavItem icon={<FileText size={18} />} labelKey="Documents" count={3} href="/documents" />
               
               <div className="px-2 mt-8 mb-2">
-                <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">System</span>
+                <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest pl-2">Settings</span>
               </div>
-              <NavItem icon={<Settings size={18} />} label="Configuration" href="/configuration" />
-              <NavItem icon={<Shield size={18} />} label="Access Control" href="/access-control" />
+              <TranslatedNavItem icon={<Settings size={18} />} labelKey="Configuration" href="/configuration" active />
+              <TranslatedNavItem icon={<Shield size={18} />} labelKey="Access Control" href="/access-control" />
             </nav>
             
             <div className="px-4 mt-auto">
-              <Link href="/login" className="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-gray-100 hover:bg-gray-200 transition-all text-gray-500 hover:text-[#FE5729]">
-                <LogOut size={18} />
-                <span className="text-[13px] font-bold">Logout</span>
-              </Link>
+              <TranslatedNavItem icon={<LogOut size={18} />} labelKey="Logout" href="/login" />
             </div>
           </aside>
 
@@ -91,18 +89,3 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   );
 }
 
-function NavItem({ icon, label, count, active = false, href }: any) {
-  return (
-    <Link href={href || "#"} className={`relative w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-300 group ${active ? "bg-white shadow-[0_4px_15px_rgb(0,0,0,0.03)] border border-[#F1F1F1]" : "border border-transparent hover:bg-white hover:shadow-sm"}`}>
-      <div className={`flex items-center gap-3 ${active ? "text-[#1C1C1C]" : "text-gray-500 group-hover:text-[#1C1C1C]"}`}>
-         <div className={active ? "text-[#FE5729]" : "text-gray-400 group-hover:text-[#FE5729] transition-colors"}>{icon}</div>
-         <span className="text-[13px] font-bold">{label}</span>
-      </div>
-      {count !== undefined && (
-        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${active ? "bg-[#FE5729] text-white" : "bg-[#F1F1F1] text-gray-500"}`}>
-          {count}
-        </span>
-      )}
-    </Link>
-  );
-}

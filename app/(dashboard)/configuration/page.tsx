@@ -1,6 +1,9 @@
 "use client";
+"use client";
 import React from 'react';
+import Link from 'next/link';
 import { Building, Globe, FileText, Users, ChevronRight } from 'lucide-react';
+import { useLanguage } from '@/components/LanguageContext';
 
 const teamMembers = [
   { name: 'AMO 1', email: 'amo.1@email.com', role: 'ENGINEER', jobTitle: 'Not set' },
@@ -10,11 +13,13 @@ const teamMembers = [
 ];
 
 export default function ConfigurationPage() {
+  const { language, setLanguage, t } = useLanguage();
+
   return (
     <div className="animate-in fade-in duration-700 w-full">
       {/* Header */}
       <div className="bg-white rounded-2xl p-6 shadow-[0_4px_20px_rgb(0,0,0,0.02)] border border-[#F1F1F1] mb-6">
-        <h1 className="text-2xl font-bold text-[#1C1C1C]">Configuration</h1>
+        <h1 className="text-2xl font-bold text-[#1C1C1C]">{t('Configuration')}</h1>
         <p className="text-sm text-gray-500">Tenant metadata, plan, and members</p>
       </div>
 
@@ -23,7 +28,7 @@ export default function ConfigurationPage() {
         <div className="bg-white rounded-2xl p-6 shadow-[0_4px_20px_rgb(0,0,0,0.02)] border border-[#F1F1F1]">
           <div className="flex items-center gap-3 mb-4">
             <Building size={20} className="text-gray-500" />
-            <h2 className="font-bold text-lg">Company</h2>
+            <h2 className="font-bold text-lg">{t('Company')}</h2>
           </div>
           <p className="text-sm text-gray-400 mb-2">COMPANY NAME</p>
           <p className="font-semibold mb-4">ged test</p>
@@ -43,13 +48,17 @@ export default function ConfigurationPage() {
         <div className="bg-white rounded-2xl p-6 shadow-[0_4px_20px_rgb(0,0,0,0.02)] border border-[#F1F1F1]">
           <div className="flex items-center gap-3 mb-4">
             <Globe size={20} className="text-gray-500" />
-            <h2 className="font-bold text-lg">Language</h2>
+            <h2 className="font-bold text-lg">{t('Language')}</h2>
           </div>
-           <p className="text-sm text-gray-400 mb-2">Regional settings and language</p>
-          <select className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-            <option>English</option>
-            <option>French</option>
-            <option>Spanish</option>
+           <p className="text-sm text-gray-400 mb-2">{t('Regional settings and language')}</p>
+          <select 
+            value={language}
+            onChange={(e) => setLanguage(e.target.value as 'English' | 'French' | 'Spanish')}
+            className="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white text-[#1C1C1C] focus:outline-none focus:border-[#FE5729]/50 focus:ring-2 focus:ring-[#FE5729]/10 transition-all cursor-pointer font-semibold text-[14px]"
+          >
+            <option value="English">English</option>
+            <option value="French">French</option>
+            <option value="Spanish">Spanish</option>
           </select>
         </div>
       </div>
@@ -58,19 +67,19 @@ export default function ConfigurationPage() {
       <div className="bg-white rounded-2xl p-6 shadow-[0_4px_20px_rgb(0,0,0,0.02)] border border-[#F1F1F1] my-6">
         <div className="flex items-center gap-3 mb-2">
           <FileText size={20} className="text-gray-500" />
-          <h2 className="font-bold text-lg">Document types</h2>
+          <h2 className="font-bold text-lg">{t('Document types')}</h2>
         </div>
-        <p className="text-sm text-gray-500 mb-4">Create types and dynamic fields for documents.</p>
-        <button className="text-sm text-blue-500 font-semibold flex items-center gap-1">
-          Manage typologies <ChevronRight size={16} />
-        </button>
+        <p className="text-sm text-gray-500 mb-4">{t('Create types and dynamic fields for documents.')}</p>
+        <Link href="/documents/types" className="text-sm text-[#0052CC] hover:text-[#0047b3] font-semibold flex items-center gap-1 transition-colors w-fit">
+          {t('Manage typologies')} <ChevronRight size={16} />
+        </Link>
       </div>
 
       {/* Team Insights */}
       <div className="bg-white rounded-2xl p-6 shadow-[0_4px_20px_rgb(0,0,0,0.02)] border border-[#F1F1F1]">
         <div className="flex items-center gap-3 mb-2">
           <Users size={20} className="text-gray-500" />
-          <h2 className="font-bold text-lg">Team Insights</h2>
+          <h2 className="font-bold text-lg">{t('Team Insights')}</h2>
         </div>
         <p className="text-sm text-gray-500 mb-6">Current members assigned to this environment</p>
         <div className="overflow-x-auto">
