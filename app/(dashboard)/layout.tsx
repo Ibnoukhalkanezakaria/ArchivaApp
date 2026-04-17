@@ -1,9 +1,8 @@
-
 import React from "react";
 import Link from "next/link";
 import { 
   FolderOpen, MessageSquare, FileText, Settings, Shield,
-  Search, Bell, Activity, Plus
+  Search, Bell, Activity, Plus, LogOut
 } from "lucide-react";
 
 export const metadata = {
@@ -45,12 +44,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <NavItem icon={<Shield size={18} />} label="Access Control" href="/access-control" />
             </nav>
             
-            <div className="px-6 mt-auto">
-              <div className="bg-[#FAFAFA] rounded-xl p-4 border border-[#F1F1F1]">
-                 <span className="text-[11px] font-bold text-gray-500 block mb-2">Current Workspace</span>
-                 <p className="text-sm font-bold text-[#1C1C1C]">ged test</p>
-                 <span className="inline-block mt-2 px-2 py-1 bg-[#FE5729]/10 text-[#FE5729] text-[9px] font-black rounded-md uppercase tracking-wider">ENTERPRISE</span>
-              </div>
+            <div className="px-4 mt-auto">
+              <Link href="/login" className="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-gray-100 hover:bg-gray-200 transition-all text-gray-500 hover:text-[#FE5729]">
+                <LogOut size={18} />
+                <span className="text-[13px] font-bold">Logout</span>
+              </Link>
             </div>
           </aside>
 
