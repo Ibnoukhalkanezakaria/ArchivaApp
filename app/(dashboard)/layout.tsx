@@ -3,7 +3,7 @@ import Link from "next/link";
 import TranslatedNavItem from "@/components/TranslatedNavItem";
 import { 
   FolderOpen, MessageSquare, FileText, Settings, Shield,
-  Search, Bell, Activity, Plus, LogOut
+  Search, Bell, Activity, Plus, LogOut, User
 } from "lucide-react";
 
 export const metadata = {
@@ -73,9 +73,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   <Bell size={18} strokeWidth={2.5} />
                   <span className="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-[#FE5729]"></span>
                 </button>
-                <div className="w-10 h-10 rounded-full bg-white shadow-sm border-2 border-white dropdown cursor-pointer hover:shadow-md transition-all overflow-hidden">
-                  <img src="https://i.pravatar.cc/150?img=11" alt="User" className="w-full h-full object-cover" />
-                </div>
+                <Link href="/configuration" className="flex items-center gap-2 bg-white shadow-sm border border-[#F1F1F1] rounded-full pl-2 pr-4 py-1.5 cursor-pointer hover:shadow-md hover:border-[#0052CC]/20 transition-all">
+                  <div className="w-8 h-8 rounded-full bg-[#E5F0FF] flex items-center justify-center text-[#0052CC]">
+                    <User size={16} fill="currentColor" strokeWidth={0} />
+                  </div>
+                  <span className="text-[14px] font-bold text-[#0052CC]">ged1</span>
+                </Link>
               </div>
             </header>
 
